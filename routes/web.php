@@ -14,12 +14,43 @@
 */
 
 $router->get('/', function () use ($router) {
-    return view('prueba');
+    return view('index');
 });
 
-$router->group( ['prefix'=>'api/v1'],function () use ($router) {
-    $router->get('product','ProductController@index');
+$router->group(['prefix' => 'api/v1'], function () use ($router) {
 
+
+    // Product actions
+    $router->group(['prefix' => 'products'], function () use ($router) {
+        $router->get('/', 'ProductController@index');
+    });
+
+    // User actions
+    $router->group(['prefix' => 'users'], function () use ($router) {
+
+        // Register user
+        $router->post('register', 'AuthController@register');
+
+        // Get JWT token
+        $router->post('login', 'AuthController@login');
+
+        // Get user profile for currently logged user
+        $router->get('profile', 'UserController@profile');
+
+        // Get groups for currently logged user
+        $router->get('groups', 'UserController@roles');
+
+        // Get one user by id
+        $router->get('user/{id}', 'UserController@singleUser');
+
+        // Get one user groups by id
+        $router->get('user/{id}/roles', 'UserController@singleUserRoles');
+
+        // Get all users
+        $router->get('/', 'UserController@allUsers');
+
+
+    });
 });
 
 

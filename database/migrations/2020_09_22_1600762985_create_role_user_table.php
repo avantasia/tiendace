@@ -4,21 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersRolesTable extends Migration
+class CreateRoleUserTable extends Migration
 {
     public function up()
     {
-        Schema::create('users_roles', function (Blueprint $table) {
+        Schema::create('role_user', function (Blueprint $table) {
 
-		$table->bigInteger('userid',)->unsigned();
-		$table->bigInteger('roleid',)->unsigned();
+		$table->bigInteger('user_id',)->unsigned();
+		$table->bigInteger('role_id',)->unsigned();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
             ;
             $table->bigIncrements('id');
-            $table->foreign('userid')->references('id')->on('users');
-            $table->foreign('roleid')->references('id')->on('roles');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
