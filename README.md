@@ -1,24 +1,54 @@
-# Lumen PHP Framework
+# Tienda online para la PRAC 1 de Comercio Electrónico
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+Esta es una práctica para la asignatura "Comercion Electrónico" de la UOC, de Septiembre de 2020. Su finalidad es entender el proceso de compra de una tienda online y en ningún caso está pensada para su uso en un entorno de producción.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+Personalmente he aprovechado esta práctica para la exploración de Lumen en el backend, que nunca había usado antes y su interacción con Vue en el frontend mediante tokens JWT, esta implementación puede no ser perfecta y los comentarios para mejorarla son bien recibidos.
 
-## Official Documentation
+## Frameworks utilizados
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+[Lumen](https://lumen.laravel.com/), un framework ligero de PHP para el backend
 
-## Contributing
+[Vue.js](https://vuejs.org/), un framework JS para el frontend
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+[Bootstrap-vue](https://bootstrap-vue.org/), el conocido framework CSS BootStrap adaptado con componentes de Vue para el layout y el diseño 
 
-## Security Vulnerabilities
+## Instalacion
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+Por requisito de la práctica se ha utilizado 
+[XAMPP](https://www.apachefriends.org/es/index.html), que incluye el servidor Apache, PHP y MariaDB listos para usar
 
-## License
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Inicializacion de la aplicacion
+
+Cambiar en el fichero .env los valores
+
+DB_CONNECTION=mysql
+
+DB_HOST=127.0.0.1
+
+DB_PORT=3306
+
+DB_DATABASE=tienda
+
+DB_USERNAME=tienda
+
+DB_PASSWORD=abc123.
+
+a los valores adecuados para la base de datos de MariaDB que hayamos creado para el proyecto
+
+
+En el directorio database/migrations se define el modelo de la base de datos en el ORM Eloquent , para que ejecute las consultas de creación de la BD hay que ejecutar el comandos
+
+php artisan migrate:fresh
+
+y para llenar la base de datos con datos generados aleatoriamente (la definición está en database\factories y database\seeders)
+
+php artisan db:seed
+
+Para generar una clave aleatoria para los tokens JWT 
+
+php artisan jwt:secret
+ 
+##TODO
+
+Instrucciones del frontend
