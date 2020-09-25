@@ -22,8 +22,26 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
     // Product actions
     $router->group(['prefix' => 'products'], function () use ($router) {
+
+        //Get all products
         $router->get('/', 'ProductController@index');
+
     });
+
+    // Category actions
+    $router->group(['prefix' => 'categories'], function () use ($router) {
+
+        //Get all categories
+        $router->get('/', 'CategoryController@index');
+
+        //Get all products from a category
+        $router->get('/{id}/products', 'CategoryController@products');
+
+    });
+
+
+
+
 
     // User actions
     $router->group(['prefix' => 'users'], function () use ($router) {
@@ -49,8 +67,9 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         // Get all users
         $router->get('/', 'UserController@allUsers');
 
-
     });
+
+
 });
 
 

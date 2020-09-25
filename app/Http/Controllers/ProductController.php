@@ -48,6 +48,23 @@ class ProductController extends Controller
         return response()->json($products)->setCallback($request->input('callback'));
 
     }
+    public function indexNumber(Request $request,$number){
+
+        $products  = Product::all()->first($number);
+
+        return response()->json($products)->setCallback($request->input('callback'));
+
+    }
+
+    public function categories(Request $request,$id){
+
+        $categories= Product::findOrFail($id)->categories;
+
+        return response()->json($categories)->setCallback($request->input('callback'));
+
+    }
+
+
 
     //
 }

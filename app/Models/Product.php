@@ -30,4 +30,11 @@ class Product extends Model implements AuthenticatableContract, AuthorizableCont
     protected $hidden = [
         'id',
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany('App\Models\Category','products_categories','product_id','category_id');
+    }
+
+
 }

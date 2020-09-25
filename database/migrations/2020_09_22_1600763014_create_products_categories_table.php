@@ -11,11 +11,11 @@ class CreateProductsCategoriesTable extends Migration
         Schema::create('products_categories', function (Blueprint $table) {
 
 		;
-		$table->bigInteger('productid',)->unsigned();
-		$table->bigInteger('categoryid',)->unsigned();
+		$table->bigInteger('product_id',)->unsigned();
+		$table->bigInteger('category_id',)->unsigned();
             $table->bigIncrements('id');
-            $table->foreign('productid')->references('id')->on('products');
-            $table->foreign('categoryid')->references('id')->on('categories');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

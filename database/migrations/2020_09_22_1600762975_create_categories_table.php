@@ -11,11 +11,11 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
 
 		;
-		$table->string('description',45);
+		$table->string('name',45);
 		$table->string('coverimage',200);
-            $table->bigIncrements('id');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+		$table->bigIncrements('id');
+        $table->timestamp('created_at')->useCurrent();
+        $table->timestamp('updated_at')->useCurrent();
         });
     }
 

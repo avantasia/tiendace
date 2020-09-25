@@ -79,6 +79,7 @@ class UserController extends Controller
      *
      * TODO careful when printin $e response
      *
+     * @param $id
      * @return Response
      */
     public function singleUserRoles($id)
