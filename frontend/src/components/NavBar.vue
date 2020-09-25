@@ -11,12 +11,17 @@
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
 
-                    <router-link to="/">
 
-                    <b-nav-item href="#">Inicio</b-nav-item>
-                    </router-link>
 
-                    <b-nav-item href="#" >Especias</b-nav-item>
+                    <b-nav-item to="/">Inicio</b-nav-item>
+
+
+                    <b-nav-item  :to="{ name: 'ProductList', params: {'category':1}}">
+                        Especias
+                    </b-nav-item>
+
+
+
                     <b-nav-item-dropdown text="Ingredientes" >
                         <b-dropdown-item href="#">Frescos</b-dropdown-item>
                         <b-dropdown-item href="#">Conservas</b-dropdown-item>
