@@ -1,37 +1,38 @@
 <template>
-<b-container fluid>
-    <b-row>
-        {{category.category}}
-    </b-row>
+    <b-container fluid>
+        <b-row>
+            {{ category.category }}
+        </b-row>
 
-    <b-row>
+        <b-row>
 
-        <b-card-group class="mx-auto mb-2 " deck v-for="row in productsPerRow" :key="products.index">
+            <b-card-group class="mx-auto mb-2 " deck v-for="row in productsPerRow" :key="products.index">
 
-            <b-card v-for="product in row"
-                    :key="product.index"
-                    :title=product.name
-                    :img-src=product.image
-                    img-alt="Image"
-                    img-top
-                    tag="article"
-                    style="max-width: 20rem;"
+                <b-card v-for="product in row"
+                        :key="product.index"
+                        :title=product.name
+                        :img-src=product.image
+                        img-alt="Image"
+                        img-top
+                        tag="article"
+                        style="max-width: 20rem;"
 
-            >
-                <b-card-text>
-                    {{product.description}}.
-                </b-card-text>
-                <router-link  :to="{ name: 'ProductDetails', params: product}">
-                    Comprar
+                >
+                    <b-card-text>
+                        {{ product.description }}.
+                    </b-card-text>
+                    <router-link :to="{ name: 'ProductDetails', params: product}">
+                        Comprar
 
-                </router-link>
+                    </router-link>
 
-            </b-card>
+                </b-card>
 
-        </b-card-group>
+            </b-card-group>
 
-    </b-row>
-</b-container>
+        </b-row>
+
+    </b-container>
 </template>
 
 <script>
@@ -42,18 +43,16 @@ export default {
     data() {
         return {
             products: [],
-            errors: [],
-            category:this.$route.params
+            category: this.$route.params
 
         }
     },
     created() {
-        console.log(this.category)
         let $url;
-        if (this.category.category==null){
+        if (this.category.category == null) {
             $url = 'http://localhost/api/v1/products/'
-        }else{
-            $url = 'http://localhost/api/v1/categories/'+this.category.category+'/products'
+        } else {
+            $url = 'http://localhost/api/v1/categories/' + this.category.category + '/products'
         }
 
         jsonp($url, null, (err, data) => {
@@ -61,16 +60,13 @@ export default {
                 console.error(err.message);
             } else {
                 // Get all products.
-                // TODO get only some of them in rows
-
+                // TODO get only some of them in rows with indexNumer api/do something to paginate
                 this.products = data
-                //debug
-                console.log(this.products)
             }
         });
     },
-    computed:{
-        productsPerRow(){
+    computed: {
+        productsPerRow() {
             return this.products.reduce((c, n, i) => {
                 if (i % 5 === 0) c.push([]);
                 c[c.length - 1].push(n);
@@ -78,9 +74,7 @@ export default {
             }, []);
         }
     },
-    methods: {
-
-    }
+    methods: {}
 }
 </script>
 

@@ -1,8 +1,8 @@
 <template>
 
-    <b-container  class="p-2" >
-        <b-card  class="overflow-hidden" >
-            <b-row >
+    <b-container class="p-2">
+        <b-card class="overflow-hidden">
+            <b-row>
                 <b-col md="6">
                     <b-card-img :src=product.image alt="Image" class="rounded-0"></b-card-img>
                 </b-col>
@@ -10,7 +10,7 @@
                     <b-card-body :title=product.name>
                         <b-card-text>
                             {{
-                              product.description
+                                product.description
                             }}
                         </b-card-text>
                         <b-card-text class="alert-info text-xl-center text-dark">
@@ -18,8 +18,8 @@
                             <b-icon-box-arrow-in-right></b-icon-box-arrow-in-right>
                             <span class="font-weight-bold">
                             {{
-                                product.price
-                            }}
+                                    product.price
+                                }}
                             </span>
                             €
                         </b-card-text>
@@ -41,7 +41,7 @@ export default {
     components: {Product},
     data() {
         return {
-            product:this.$route.params
+            product: this.$route.params
         }
     },
 }
