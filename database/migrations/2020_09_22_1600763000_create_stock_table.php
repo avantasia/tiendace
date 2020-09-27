@@ -10,12 +10,11 @@ class CreateStockTable extends Migration
     {
         Schema::create('stock', function (Blueprint $table) {
 
-		;
-		$table->bigInteger('productid',)->unsigned();
+            ;
+            $table->bigInteger('productid',)->unsigned();
             $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-		;
-		$table->string('location',45);
+            $table->timestamp('updated_at')->useCurrent();;
+            $table->string('location', 45);
             $table->bigIncrements('id');
             $table->foreign('productid')->references('id')->on('products');
         });

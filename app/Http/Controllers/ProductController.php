@@ -17,15 +17,17 @@ class ProductController extends Controller
         //
     }
 
-    public function createProduct(Request $request){
+    public function createProduct(Request $request)
+    {
 
         $product = Product::create($request->all());
 
         return response()->json($product)->setCallback($request->input('callback'));;
     }
 
-    public function updateProduct(Request $request, $id){
-        $product  = Product::find($id);
+    public function updateProduct(Request $request, $id)
+    {
+        $product = Product::find($id);
         $product->name = $request->input('name');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
@@ -35,35 +37,41 @@ class ProductController extends Controller
 
         return response()->json($product)->setCallback($request->input('callback'));;
     }
-    public function deleteProduct(Request $request,$id){
-        $product  = Product::find($id);
+
+    public function deleteProduct(Request $request, $id)
+    {
+        $product = Product::find($id);
         $product->delete();
 
         return response()->json('Removed successfully.')->setCallback($request->input('callback'));;
     }
-    public function index(Request $request){
 
-        $products  = Product::all();
+    public function index(Request $request)
+    {
 
-        return response()->json($products)->setCallback($request->input('callback'));
-
-    }
-    public function indexNumber(Request $request,$number){
-
-        $products  = Product::all()->first($number);
+        $products = Product::all();
 
         return response()->json($products)->setCallback($request->input('callback'));
 
     }
 
-    public function categories(Request $request,$id){
+    public function indexNumber(Request $request, $number)
+    {
 
-        $categories= Product::findOrFail($id)->categories;
+        $products = Product::all()->first($number);
+
+        return response()->json($products)->setCallback($request->input('callback'));
+
+    }
+
+    public function categories(Request $request, $id)
+    {
+
+        $categories = Product::findOrFail($id)->categories;
 
         return response()->json($categories)->setCallback($request->input('callback'));
 
     }
-
 
 
     //

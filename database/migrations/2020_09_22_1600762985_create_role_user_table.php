@@ -10,12 +10,10 @@ class CreateRoleUserTable extends Migration
     {
         Schema::create('role_user', function (Blueprint $table) {
 
-		$table->bigInteger('user_id',)->unsigned();
-		$table->bigInteger('role_id',)->unsigned();
+            $table->bigInteger('user_id',)->unsigned();
+            $table->bigInteger('role_id',)->unsigned();
             $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-
-            ;
+            $table->timestamp('updated_at')->useCurrent();;
             $table->bigIncrements('id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('role_id')->references('id')->on('roles');

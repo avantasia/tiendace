@@ -19,7 +19,7 @@ class Product extends Model implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'price','image'
+        'name', 'description', 'price', 'image'
     ];
 
     /**
@@ -33,7 +33,7 @@ class Product extends Model implements AuthenticatableContract, AuthorizableCont
 
     public function categories()
     {
-        return $this->belongsToMany('App\Models\Category','products_categories','product_id','category_id');
+        return $this->belongsToMany('App\Models\Category', 'products_categories', 'product_id', 'category_id');
     }
 
 

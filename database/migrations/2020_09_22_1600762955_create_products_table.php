@@ -10,11 +10,11 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
 
-		;
-		$table->string('name',45);
-		$table->text('description');
-		$table->float('price');
-		$table->string('image',150);
+            ;
+            $table->string('name', 45);
+            $table->text('description');
+            $table->float('price');
+            $table->string('image', 150);
             $table->bigIncrements('id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

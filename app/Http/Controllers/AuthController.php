@@ -3,8 +3,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use  App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -42,7 +42,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             //Return if failure
             //Careful with printing whole $e when not in production
-            return response()->json(['message' => 'Creation failed '.$e], 409);
+            return response()->json(['message' => 'Creation failed ' . $e], 409);
         }
 
     }
@@ -58,15 +58,12 @@ class AuthController extends Controller
 
         $credentials = $request->only(['email', 'password']);
 
-        if (! $token = Auth::attempt($credentials)) {
+        if (!$token = Auth::attempt($credentials)) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
         return $this->respondWithToken($token);
     }
-
-
-
 
 
 }

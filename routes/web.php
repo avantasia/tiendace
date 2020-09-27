@@ -40,9 +40,6 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     });
 
 
-
-
-
     // User actions
     $router->group(['prefix' => 'users'], function () use ($router) {
 

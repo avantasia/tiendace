@@ -10,8 +10,8 @@ class CreateCartTable extends Migration
     {
         Schema::create('cart', function (Blueprint $table) {
 
-		;
-		$table->bigInteger('userid',)->unsigned();
+            ;
+            $table->bigInteger('userid',)->unsigned();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->bigIncrements('id');

@@ -10,11 +10,11 @@ class CreateProductCartTable extends Migration
     {
         Schema::create('products_cart', function (Blueprint $table) {
 
-		;
+            ;
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
-		$table->bigInteger('productid',)->unsigned();
-		$table->bigInteger('cartid',)->unsigned();
+            $table->bigInteger('productid',)->unsigned();
+            $table->bigInteger('cartid',)->unsigned();
             $table->bigIncrements('id');
             $table->foreign('productid')->references('id')->on('products');
             $table->foreign('cartid')->references('id')->on('cart');

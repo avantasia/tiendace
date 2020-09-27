@@ -50,7 +50,7 @@ class UserController extends Controller
      */
     public function allUsers()
     {
-        return response()->json(['users' =>  User::all()], 200);
+        return response()->json(['users' => User::all()], 200);
     }
 
     /**
@@ -69,7 +69,7 @@ class UserController extends Controller
 
         } catch (\Exception $e) {
 
-            return response()->json(['message' => $e ], 404);
+            return response()->json(['message' => $e], 404);
         }
 
     }
@@ -91,11 +91,10 @@ class UserController extends Controller
 
         } catch (\Exception $e) {
 
-            return response()->json(['message' => $e ], 404);
+            return response()->json(['message' => $e], 404);
         }
 
     }
-
 
 
 }

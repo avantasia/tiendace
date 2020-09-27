@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Cart extends Model
 {
 
     /**
@@ -13,13 +13,16 @@ class Category extends Model
      * @var array
      */
     protected $fillable = [
-        'coverimage', 'name'
+
     ];
 
 
     public function products()
     {
-        return $this->belongsToMany('App\Models\Product', 'products_categories', 'category_id', 'product_id');
+        return $this->belongsToMany('App\Models\Product');
+    }
+    public function user(){
+        return $this->belongsTo('App\Models\User');
     }
 
 }
