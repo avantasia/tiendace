@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Cart;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class CartController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -18,60 +21,142 @@ class CategoryController extends Controller
         //
     }
 
+    /**
+     * Create a new cart
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createCart(Request $request)
     {
+        $existingcart = Cart::query()->where('user_id','=',Auth::user()->id)->count();
 
-        $cart = Category::create($request->all());
+        if($existingcart==0){
+            $cart = Cart::create($request->all());
+            $cart->save();
+            return response()->json($cart)->setCallback($request->input('callback'));;
+        }else{
+            $error="{'error':'Already has one cart'}";
+            return  response()->json($error);
+        }
 
-        return response()->json($cart)->setCallback($request->input('callback'));;
     }
 
+    /**
+     * Add an item to shopping cart
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
     // TODO Implement stock and quantity management
-    public function addToCart(Request $request, $id)
+    public function addToCart(Request $request)
     {
-        $cart = Category::find($id);
+        $id = $request->input('id');
+
+        $existingcart = Cart::query()->where('user_id','=',Auth::user()->id)->count();
+
+        if($existingcart==0) {
+            $cart = Cart::create($request->all());
+            $cart->save();
+        }
+
+        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
+
+
         $cart->products()->attach(Product::find($id));
-        $cart->save();
+
 
         return response()->json($cart)->setCallback($request->input('callback'));;
     }
-    public function removeFromCart(Request $request, $id)
+
+    /**
+     * Remove an item from cart
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function removeFromCart(Request $request)
     {
-        $cart = Category::find($id);
+
+        $id = $request->input('id');
+
+        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
         $cart->products()->detach(Product::find($id));
-        $cart->save();
 
         return response()->json($cart)->setCallback($request->input('callback'));;
     }
 
-
-
-    public function deleteCart(Request $request, $id)
+    /**
+     * Delete cart
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deleteCart(Request $request)
     {
-        $cart = Category::find($id);
+
+        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
+
         $cart->delete();
 
         return response()->json('Removed successfully.')->setCallback($request->input('callback'));;
     }
 
+    /**
+     * Get all carts
+     * TODO check if user is admin and show all active carts, else show own cart
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(Request $request)
     {
 
-        $cart = Category::all();
+
+        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
 
         return response()->json($cart)->setCallback($request->input('callback'));
 
     }
 
-    public function products(Request $request, $id)
+    /**
+     * Get all products for a given cart
+     * TODO check if user is admin and show products of any cart, else show own cart
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function products(Request $request)
     {
 
-        $products = Cart::findOrFail($id)->products;
+        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
+
+        $products = $cart->products;
+
+        return response()->json($products)->setCallback($request->input('callback'));
+
+    }
+
+    /**
+     * Get all products for a given cart
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function myProducts(Request $request)
+    {
+        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
+
+        $products = $cart->products;
 
         return response()->json($products)->setCallback($request->input('callback'));
 
     }
 
 
-    //
 }

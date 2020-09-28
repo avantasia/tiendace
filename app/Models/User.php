@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -33,11 +34,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
-
+    /**
+     * Get user roles
+     * @return BelongsToMany
+     */
     public function roles()
     {
         return $this->belongsToMany('App\Models\Role');
     }
+
+    /**
+     * JWT identifier user for token authentication
+     * @return mixed
+     */
 
     public function getJWTIdentifier()
     {

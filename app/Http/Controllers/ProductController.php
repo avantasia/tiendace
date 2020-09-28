@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -17,6 +18,13 @@ class ProductController extends Controller
         //
     }
 
+    /**
+     * Create a new product
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+
     public function createProduct(Request $request)
     {
 
@@ -24,6 +32,14 @@ class ProductController extends Controller
 
         return response()->json($product)->setCallback($request->input('callback'));;
     }
+
+    /**
+     * Change any field of an existing product
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
 
     public function updateProduct(Request $request, $id)
     {
@@ -38,6 +54,14 @@ class ProductController extends Controller
         return response()->json($product)->setCallback($request->input('callback'));;
     }
 
+    /**
+     * Delete the product given its id
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+
     public function deleteProduct(Request $request, $id)
     {
         $product = Product::find($id);
@@ -45,6 +69,13 @@ class ProductController extends Controller
 
         return response()->json('Removed successfully.')->setCallback($request->input('callback'));;
     }
+
+    /**
+     * Return the complete list of products
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
 
     public function index(Request $request)
     {
@@ -55,6 +86,14 @@ class ProductController extends Controller
 
     }
 
+    /**
+     * Return a fixed number of products given the number
+     *
+     * @param Request $request
+     * @param $number
+     * @return JsonResponse
+     */
+
     public function indexNumber(Request $request, $number)
     {
 
@@ -63,6 +102,14 @@ class ProductController extends Controller
         return response()->json($products)->setCallback($request->input('callback'));
 
     }
+
+    /**
+     * Return the related categories given a product id
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
 
     public function categories(Request $request, $id)
     {

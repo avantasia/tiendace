@@ -28,6 +28,31 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
     });
 
+    // Cart actions
+    $router->group(['prefix' => 'cart'], function () use ($router) {
+
+        //Get User cart
+        $router->get('/', 'CartController@index');
+
+        //Add product to cart
+        $router->post('/addtocart', 'CartController@addToCart');
+
+        //Remove a product from cart
+        $router->post('/removefromcart', 'CartController@removeFromCart');
+
+        //Create cart
+        $router->post('/createcart', 'CartController@createCart');
+
+        //View carts products
+        $router->get('/myproducts', 'CartController@myProducts');
+
+
+
+
+    });
+
+
+
     // Category actions
     $router->group(['prefix' => 'categories'], function () use ($router) {
 

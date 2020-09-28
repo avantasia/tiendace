@@ -1,10 +1,6 @@
 <template>
     <b-container fluid>
         <b-row>
-            {{ category.category }}
-        </b-row>
-
-        <b-row>
 
             <b-card-group class="mx-auto mb-2 " deck v-for="row in productsPerRow" :key="products.index">
 
@@ -21,9 +17,11 @@
                     <b-card-text>
                         {{ product.description }}.
                     </b-card-text>
-                    <b-button class="mr-2 ml-2" variant="outline-success":to="{ name: 'ProductDetails', params: product}">
-                        Ver detalles
-
+                    <b-button class="mr-2 ml-2" variant="outline-success" :to="{ name: 'ProductDetails', params: product}">
+                        Ver Detalles
+                    </b-button>
+                    <b-button class="mr-2 ml-2 " variant="outline-danger"  v-on:click="removeProduct(product.index)">
+                        Eliminar
                     </b-button>
 
                 </b-card>
@@ -37,9 +35,10 @@
 
 <script>
 import jsonp from 'jsonp';
+import axios from "axios";
 
 export default {
-    name: "ProductList",
+    name: "Cart",
     data() {
         return {
             products: [],
@@ -48,22 +47,12 @@ export default {
         }
     },
     created() {
-        let $url;
-        if (this.category.category == null) {
-            $url = 'http://localhost/api/v1/products/'
-        } else {
-            $url = 'http://localhost/api/v1/categories/' + this.category.category + '/products'
-        }
+        const API_URL = 'http://localhost/api/v1/cart/myproducts';
 
-        jsonp($url, null, (err, data) => {
-            if (err) {
-                console.error(err.message);
-            } else {
-                // Get all products.
-                // TODO get only some of them in rows with indexNumer api/do something to paginate
-                this.products = data
-            }
-        });
+        axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
+            .then(response => {
+                this.products=response.data;
+            });
     },
     computed: {
         productsPerRow() {
@@ -74,7 +63,12 @@ export default {
             }, []);
         }
     },
-    methods: {}
+    methods: {
+        removeProduct(index){
+            const API_URL = 'http://localhost/api/v1/cart/removefromcart';
+
+        }
+    }
 }
 </script>
 

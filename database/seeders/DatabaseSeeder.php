@@ -16,6 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+        /**
+         * Table seeding
+         * Call all individual seeders for each table
+         *
+         */
         //Table seeding
         $this->call([
                 UserSeeder::class,
@@ -26,7 +31,13 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        //Many to many seeding
+        /**
+         * Many to many seeding
+         * After table seeding attach many-to-many relations here
+         *
+         */
+
+        // Products and categories
         $categories = Category::all();
         Product::all()->each(function ($product) use ($categories) {
             $product->categories()->attach(

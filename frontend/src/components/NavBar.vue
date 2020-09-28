@@ -64,7 +64,8 @@
                             Registro
                         </b-button>
                     </b-nav-form>
-                    <b-button v-if="loggedIn" size="md" class="btn btn-outline-success my-2 my-sm-0" variant="light" href="#">Cesta
+
+                    <b-button :to="{ name: 'Cart'}" v-if="loggedIn" size="md" class="btn btn-outline-success my-2 my-sm-0" variant="light" href="#">Cesta
                         🛒
                     </b-button>
                     <b-nav-item-dropdown v-if="loggedIn" right>
@@ -73,7 +74,7 @@
                             <em>Usuario</em>
                         </template>
 
-                        <b-dropdown-item href="#">Perfil</b-dropdown-item>
+                        <b-dropdown-item v-on:click="profile">Perfil</b-dropdown-item>
                         <b-dropdown-item v-on:click="logout">Cerrar sesión</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
@@ -94,6 +95,7 @@
 
 <script>
 import User from "@/models/User";
+import axios from 'axios';
 
 export default {
     name: "NavBar",
@@ -149,7 +151,19 @@ export default {
         },
         logout(){
             this.$store.dispatch('auth/logout')
+        },
+        profile(){
+            const API_URL = 'http://localhost/api/v1/users/';
+
+            axios.get(API_URL + 'profile', {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
+                .then(response => {
+                    this.$router.push({path:'/profile',params:{user:response.data.user}});
+            });
+        },
+        cart(){
+
         }
+
 
     }
 }

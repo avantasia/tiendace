@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    /**
+     * Respond with JWT token
+     *
+     * @param $token
+     * @return JsonResponse
+     */
     protected function respondWithToken($token)
     {
         return response()->json([

@@ -15,6 +15,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        /**
+         * Fill the users table with a sample user for every role
+         * TODO Seller account
+         *
+         */
         DB::table('users')->insert([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
