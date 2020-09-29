@@ -20,7 +20,7 @@
                     <b-button class="mr-2 ml-2" variant="outline-success" :to="{ name: 'ProductDetails', params: product}">
                         Ver Detalles
                     </b-button>
-                    <b-button class="mr-2 ml-2 " variant="outline-danger"  v-on:click="removeProduct(product.index)">
+                    <b-button class="mr-2 ml-2 " variant="outline-danger"  v-on:click="removeFromCart(product)">
                         Eliminar
                     </b-button>
 
@@ -47,12 +47,17 @@ export default {
         }
     },
     created() {
+        this.products=this.$store.state.cart
+        /*
         const API_URL = 'http://localhost/api/v1/cart/myproducts';
 
         axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
             .then(response => {
-                this.products=response.data;
+                //this.products=response.data;
+                this.$store.commit('refreshCart',response.data)
             });
+
+         */
     },
     computed: {
         productsPerRow() {
@@ -64,9 +69,8 @@ export default {
         }
     },
     methods: {
-        removeProduct(index){
-            const API_URL = 'http://localhost/api/v1/cart/removefromcart';
-
+        removeFromCart(){
+            this.$store.commit('removeFromCart',this.product)
         }
     }
 }

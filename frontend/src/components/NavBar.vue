@@ -65,8 +65,10 @@
                         </b-button>
                     </b-nav-form>
 
-                    <b-button :to="{ name: 'Cart'}" v-if="loggedIn" size="md" class="btn btn-outline-success my-2 my-sm-0" variant="light" href="#">Cesta
+                    <b-button :to="{ name: 'Cart'}" size="md" class="btn btn-outline-success my-2 my-sm-0" variant="light" href="#">Cesta
                         🛒
+                        <b-badge variant="primary">{{ Object.keys(this.$store.state.cart).length == 0 ? "" : Object.keys(this.$store.state.cart).length }}</b-badge>
+
                     </b-button>
                     <b-nav-item-dropdown v-if="loggedIn" right>
                         <!-- Using 'button-content' slot -->
@@ -121,7 +123,6 @@ export default {
     },
     methods: {
         login() {
-            console.log("hola!");
             this.loading = true;
             this.$validator.validateAll().then(isValid => {
                 if (!isValid) {
@@ -132,7 +133,9 @@ export default {
                 if (this.user.email && this.user.password) {
                     this.$store.dispatch('auth/login', this.user).then(
                         () => {
-                            this.$router.push('/');
+                            if(this.$router.currentRoute.path!='/'){
+                                this.$router.push('/');
+                            }
                         },
                         error => {
                             this.loading = false;

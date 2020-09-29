@@ -24,6 +24,7 @@ export const auth = {
         logout({ commit }) {
             AuthService.logout();
             commit('logout');
+            this.commit('emptyCart')
         },
         register({ commit }, user) {
             return AuthService.register(user).then(
@@ -42,6 +43,7 @@ export const auth = {
         loginSuccess(state, user) {
             state.status.loggedIn = true;
             state.user = user;
+            this.commit('refreshCart');
         },
         loginFailure(state) {
             state.status.loggedIn = false;

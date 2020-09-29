@@ -54,6 +54,7 @@
 import Product from "@/components/Product";
 import axios from "axios";
 
+
 export default {
     name: "ProductDetails",
     components: {Product},
@@ -63,16 +64,12 @@ export default {
             dismissSecs: 5,
             dismissCountDown: 0,
             showDismissibleAlert: false
+
         }
     },
     methods: {
         addToCart(){
-            const API_URL = 'http://localhost/api/v1/cart/addtocart';
-            console.log(this.product)
-            axios.post(API_URL , {'id':this.product.id},{headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
-                .then(response => {
-                    this.products=response.data;
-                });
+            this.$store.commit('addToCart',this.product)
             this.showAlert()
         },
         countDownChanged(dismissCountDown) {
@@ -80,6 +77,16 @@ export default {
         },
         showAlert() {
             this.dismissCountDown = this.dismissSecs
+        },
+        refreshCart() {
+            const API_URL = 'http://localhost/api/v1/cart/myproducts';
+
+            axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
+                .then(response => {
+                    //this.products=response.data;
+                    this.$store.commit('refreshCart',response.data)
+                    this.products=this.$store.state.cart
+                });
         }
     }
 }
