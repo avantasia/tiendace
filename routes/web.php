@@ -89,6 +89,16 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         // Get all users
         $router->get('/', 'UserController@allUsers');
 
+        // Get info about the currently authenticated user
+        $router->get('/myuser', 'UserController@myUser');
+
+        // Update the currently authenticated user
+        $router->post('/update', 'UserController@updateUser');
+
+
+
+
+
     });
 
 

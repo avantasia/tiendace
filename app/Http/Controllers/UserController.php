@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -73,6 +74,26 @@ class UserController extends Controller
         }
 
     }
+    /**
+     * Get self info
+     *
+     * TODO careful when printin $e response
+     *
+     * @return Response
+     */
+    public function myUser()
+    {
+        try {
+            $user = User::findOrFail(Auth::user()->id);
+
+            return response()->json(['user' => $user], 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json(['message' => $e], 404);
+        }
+
+    }
 
     /**
      * Get one User groups by id
@@ -94,6 +115,28 @@ class UserController extends Controller
             return response()->json(['message' => $e], 404);
         }
 
+    }
+
+    public function updateUser(Request $request){
+
+        $user = User::find(Auth::user()->id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->address = $request->input('address');
+        $user->city = $request->input('city');
+        $user->postal_code = $request->input('postal_code');
+
+        if ($request->file('profile_picture') != null) {
+            $picName = Hash("sha256", $user->email);
+            $extension = $request->file('profile_picture')->clientExtension();
+            $user->picture = $picName . "." . $extension;
+            $destinationPath = '..' . DIRECTORY_SEPARATOR . 'frontend' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'users';
+            $request->file('profile_picture')->move($destinationPath, $user->picture);
+        }
+
+        $user->save();
+
+        return response()->json($user);;
     }
 
 

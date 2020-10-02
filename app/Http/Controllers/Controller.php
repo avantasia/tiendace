@@ -16,6 +16,7 @@ class Controller extends BaseController
      */
     protected function respondWithToken($token)
     {
+        Auth::factory()->setTTL(60000);
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',

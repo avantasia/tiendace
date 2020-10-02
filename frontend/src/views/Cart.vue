@@ -1,34 +1,55 @@
 <template>
-    <b-container fluid>
-        <b-row>
+    <b-container>
+        <b-card  v-for="product in groupedProducts"
+                    :key="product[0].index"
+                    :title=product[0].name
+                    img-alt="Image"
+                    img-top
+                    tag="article"
+                    class="overflow-hidden mt-1 border rounded-sm "
 
-            <b-card-group class="mx-auto mb-2 " deck v-for="row in productsPerRow" :key="products.index">
+            >
+                <b-row no-gutters>
+                    <b-col class="col-md-4" align-self="center">
+                        <b-card-img :src="product[0].image" alt="Image" class="rounded-0"></b-card-img>
+                    </b-col>
 
-                <b-card v-for="product in row"
-                        :key="product.index"
-                        :title=product.name
-                        :img-src=product.image
-                        img-alt="Image"
-                        img-top
-                        tag="article"
-                        style="max-width: 20rem;"
+                    <b-col align-self="center">
+                        Cantidad
+                        <b-icon-dash-circle role="button" class="nosel ml-1" v-on:click="removeFromCart(product[0])"></b-icon-dash-circle>
+                        {{ product.length }}
+                        <b-icon-plus-circle role="button" class="nosel" v-on:click="addToCart(product[0])"></b-icon-plus-circle>
 
-                >
-                    <b-card-text>
-                        {{ product.description }}.
-                    </b-card-text>
-                    <b-button class="mr-2 ml-2" variant="outline-success" :to="{ name: 'ProductDetails', params: product}">
-                        Ver Detalles
-                    </b-button>
-                    <b-button class="mr-2 ml-2 " variant="outline-danger"  v-on:click="removeFromCart(product)">
-                        Eliminar
-                    </b-button>
+                    </b-col>
+                    <b-col align-self="center">
+                        Precio
+                        {{ product[0].price.toFixed(2) }}
+                    </b-col>
 
-                </b-card>
+                    <b-col align-self="center">
+                        <b-button class="mr-2 ml-2" variant="outline-success"
+                                  :to="{ name: 'ProductDetails', params: product[0]}">
+                            Ver Detalles
+                        </b-button>
+                    </b-col>
+                    <b-col align-self="center">
+                        <b-button class="mr-2 ml-2 " variant="outline-danger" v-on:click="emptyCart(product[0])">
+                            Eliminar
+                        </b-button>
+                    </b-col>
+                    <b-col align-self="center">
+                        Total {{ product.map(product => product.price).reduce((plus, price) => price + plus).toFixed(2)}}
+                    </b-col>
+                </b-row>
+            </b-card>
 
-            </b-card-group>
+        <b-card  title="Total de la compra"
+                 tag="article"
+                 class="overflow-hidden mt-1 border rounded-sm "
 
-        </b-row>
+        >
+            Total {{ this.totalPrice}}
+            </b-card>
 
     </b-container>
 </template>
@@ -42,24 +63,21 @@ export default {
     data() {
         return {
             products: [],
+            groupedProducts: [],
             category: this.$route.params
 
         }
     },
     created() {
-        this.products=this.$store.state.cart
-        /*
-        const API_URL = 'http://localhost/api/v1/cart/myproducts';
-
-        axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
-            .then(response => {
-                //this.products=response.data;
-                this.$store.commit('refreshCart',response.data)
-            });
-
-         */
+        this.products = this.$store.state.cart
+        this.groupedProducts = _.groupBy(this.products, "id")
     },
     computed: {
+        totalPrice(){
+            let result = this.products.reduce((a, b) => a += Object.values(b)[2], 0);
+            return result.toFixed(2)
+
+        },
         productsPerRow() {
             return this.products.reduce((c, n, i) => {
                 if (i % 5 === 0) c.push([]);
@@ -69,8 +87,40 @@ export default {
         }
     },
     methods: {
-        removeFromCart(){
-            this.$store.commit('removeFromCart',this.product)
+        removeFromCart(item) {
+            this.$store.commit('removeFromCart', item)
+            this.products = this.$store.state.cart
+            this.groupedProducts = _.groupBy(this.products, "id")
+        },
+        addToCart(item) {
+            this.$store.commit('addToCart', item)
+            this.products = this.$store.state.cart
+            this.groupedProducts = _.groupBy(this.products, "id")
+        },
+        emptyCart(item){
+            this.$bvModal.msgBoxConfirm('¿Desea eliminar todos los productos del carro?.', {
+                title: 'Por favor confirme la eliminación',
+                size: 'sm',
+                buttonSize: 'sm',
+                okVariant: 'danger',
+                okTitle: 'SI',
+                cancelTitle: 'NO',
+                footerClass: 'p-2',
+                hideHeaderClose: false,
+                centered: true
+            })
+                .then(value => {
+                    if(value){
+                    this.products
+                        .filter(p => p.id==item.id)
+                        .forEach(p => this.removeFromCart(p))
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+
         }
     }
 }
@@ -78,4 +128,17 @@ export default {
 
 <style scoped>
 
+.card-img, .card-img-top {
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
+    height: 15rem;
+    object-fit: cover;
+}
+.nosel{
+    user-select: none; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
 </style>

@@ -18,6 +18,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->bigIncrements('id');
+            $table->string('address',150)->default("");
+            $table->string('city',100)->default("");
+            $table->integer('postal_code')->default(0);
+            $table->string('picture',150)->default("");
 
         });
     }

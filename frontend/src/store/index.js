@@ -38,15 +38,16 @@ export default new Vuex.Store({
                 }
             )
         },
-        removeFromCart(item){
-
-            this.state.cart.pop(item);
+        removeFromCart(cart,item){
+            console.log(item);
+            this.state.cart.splice(this.state.cart.indexOf(item), 1);
 
             if(this.state.auth.status.loggedIn){
                 const API_URL = 'http://localhost/api/v1/cart/removefromcart';
                 console.log(item)
                 axios.post(API_URL , {'id':item.id},{headers: {'Authorization': 'Bearer '+this.state.auth.user.token} })
                     .then(response => {
+                        //TODO check if the item actually got deleted
                         //this.products=response.data;
                         this.commit('refreshCart');
                     });

@@ -35,7 +35,7 @@
                             <b-icon-box-arrow-in-right></b-icon-box-arrow-in-right>
                             <span class="font-weight-bold">
                             {{
-                                    product.price
+                                    product.price.toFixed(2)
                                 }}
                             </span>
                             €
