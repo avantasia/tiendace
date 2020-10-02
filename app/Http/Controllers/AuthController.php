@@ -22,7 +22,6 @@ class AuthController extends Controller
         //Validate data
         $this->validate($request, [
             'name' => 'required|string',
-            'username' => 'required|string|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
         ]);
@@ -31,7 +30,6 @@ class AuthController extends Controller
 
             $user = new User;
             $user->name = $request->input('name');
-            $user->username = $request->input('username');
             $user->email = $request->input('email');
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);

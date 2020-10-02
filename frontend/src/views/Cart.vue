@@ -50,6 +50,8 @@
         >
             Total {{ this.totalPrice}}
             </b-card>
+        <b-button :to="{ name: 'Checkout'}" type="button" variant="outline-success" class="btn btn-outline-success btn-block" >Confirmar compra</b-button>
+
 
     </b-container>
 </template>

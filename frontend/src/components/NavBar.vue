@@ -60,7 +60,7 @@
                         <b-button v-on:click="login" class="mb-2 mr-sm-2 mb-sm-0">
                             Iniciar sesión
                         </b-button >
-                        <b-button class="mb-2 mr-sm-2 mb-sm-0">
+                        <b-button :to="{name: 'Register'}" class="mb-2 mr-sm-2 mb-sm-0">
                             Registro
                         </b-button>
                     </b-nav-form>
