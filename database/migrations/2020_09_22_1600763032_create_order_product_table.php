@@ -4,25 +4,25 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartProductTable extends Migration
+class CreateOrderProductTable extends Migration
 {
     public function up()
     {
-        Schema::create('cart_product', function (Blueprint $table) {
+        Schema::create('order_product', function (Blueprint $table) {
 
             ;
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->bigInteger('product_id',)->unsigned();
-            $table->bigInteger('cart_id',)->unsigned();
+            $table->bigInteger('order_id',)->unsigned();
             $table->bigIncrements('id');
-            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
-            $table->foreign('cart_id')->references('id')->on('carts')->cascadeOnDelete();
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('cart_product');
+        Schema::dropIfExists('order_product');
     }
 }

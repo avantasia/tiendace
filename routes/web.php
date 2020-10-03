@@ -51,6 +51,17 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
     });
 
+    // Order actions
+    $router->group(['prefix' => 'orders'], function () use ($router) {
+
+        //Get all Orders
+        $router->get('/', 'OrderController@index');
+
+        //Create a new order
+        $router->post('/create', 'OrderController@createOrder');
+
+    });
+
 
 
     // Category actions
@@ -94,10 +105,6 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
         // Update the currently authenticated user
         $router->post('/update', 'UserController@updateUser');
-
-
-
-
 
     });
 
