@@ -43,6 +43,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->belongsToMany('App\Models\Role');
     }
 
+
+
     /**
      * JWT identifier user for token authentication
      * @return mixed

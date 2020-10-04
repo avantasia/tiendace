@@ -57,8 +57,14 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         //Get all Orders
         $router->get('/', 'OrderController@index');
 
+        //Get pending Orders
+        $router->get('/pending', 'OrderController@pending');
+
         //Create a new order
         $router->post('/create', 'OrderController@createOrder');
+
+        //Get products for an order
+        $router->get('/{id}/products', 'OrderController@products');
 
     });
 
@@ -105,6 +111,9 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
         // Update the currently authenticated user
         $router->post('/update', 'UserController@updateUser');
+
+        // Check if the user is admin
+        $router->get('/isadmin', 'UserController@isAdmin');
 
     });
 

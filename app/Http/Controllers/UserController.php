@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +26,7 @@ class UserController extends Controller
     /**
      * Get the current authenticated User.
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function profile()
     {
@@ -40,6 +41,24 @@ class UserController extends Controller
     public function roles()
     {
         return response()->json(['groups' => Auth::user()->roles], 200);
+    }
+
+    /**
+     * Check if the user is admin, inherited from Controller but exposed here
+     *
+     */
+    public function isAdmin(Request $request){
+        if(Auth::user()) {
+            $isAdmin = $this->checkGroup($request, 'admin');
+
+            if ($isAdmin) {
+                return response()->json(["admin"=>true],200)->setCallback($request->input('callback'));
+            } else {
+                return response()->json(["admin"=>false],500)->setCallback($request->input('callback'));
+            }
+        }else{
+            return response()->json(["error"=>'Unauthorized'], 400);
+        }
     }
 
     /**

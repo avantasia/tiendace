@@ -10,6 +10,8 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Http\Controllers\AuthController;
+
 
 
 class OrderController extends Controller
@@ -52,87 +54,61 @@ class OrderController extends Controller
             return response()->json($order)->setCallback($request->input('callback'));;
     }
 
-    /**
-     * Add an item to order
-     *
-     * @param Request $request
-     * @param $id
-     * @return JsonResponse
-     */
-    // TODO Implement stock and quantity management
-    public function addToOrder(Request $request)
-    {
-
-        $existingcart = Cart::query()->where('user_id','=',Auth::user()->id)->count();
-
-        if($existingcart==0) {
-            $cart = Cart::create($request->all());
-            $cart->save();
-        }
-
-        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
 
 
 
-
-        return response()->json($cart)->setCallback($request->input('callback'));;
-    }
 
     /**
-     * Remove an item from cart
-     *
-     * @param Request $request
-     * @param $id
-     * @return JsonResponse
-     */
-    public function removeFromCart(Request $request)
-    {
-
-        $id = $request->input('id');
-
-        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
-        $cart->products()->detach(Product::find($id));
-
-        return response()->json($cart)->setCallback($request->input('callback'));;
-    }
-
-    /**
-     * Delete cart
-     *
-     * @param Request $request
-     * @param $id
-     * @return JsonResponse
-     */
-    public function deleteCart(Request $request)
-    {
-
-        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
-
-        $cart->delete();
-
-        return response()->json('Removed successfully.')->setCallback($request->input('callback'));;
-    }
-
-    /**
-     * Get all carts
-     * TODO check if user is admin and show all active carts, else show own cart
+     * Get all orders if the user is admin, else show only user's ones
      *
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request)
     {
+        if(Auth::user()) {
+            $isAdmin = $this->checkGroup($request, 'admin');
 
-
-        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
-
-        return response()->json($cart)->setCallback($request->input('callback'));
+            if ($isAdmin) {
+                $orders = Order::all();
+                return response()->json($orders)->setCallback($request->input('callback'));
+            } else {
+                $orders = Order::query()->where('user_id','=',Auth::user()->id)->get();
+                return response()->json($orders)->setCallback($request->input('callback'));
+            }
+        }else{
+            return response()->json(["error"=>'Unauthorized'], 400);        }
 
     }
 
     /**
-     * Get all products for a given cart
+     * Get pending orders
      * TODO check if user is admin and show products of any cart, else show own cart
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function pending(Request $request)
+    {
+
+        if(Auth::user()) {
+            $isAdmin = $this->checkGroup($request, 'admin');
+
+            if ($isAdmin) {
+                $orders = Order::query()->where('sent_date','=',null);
+
+                return response()->json($orders)->setCallback($request->input('callback'));
+            } else {
+                $orders = Order::query()->where('user_id','=',Auth::user()->id)->where('sent_date','=',null)->get();
+                return response()->json($orders)->setCallback($request->input('callback'));
+            }
+        }else{
+            return response()->json(["error"=>'Unauthorized'], 400);        }
+    }
+
+    /**
+     * Get all products for a given cart
      *
      * @param Request $request
      * @param $id
@@ -141,28 +117,19 @@ class OrderController extends Controller
     public function products(Request $request)
     {
 
-        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
+        if(Auth::user()) {
+            $orderid=$request->route()[2]['id'];
+            $isAdmin = $this->checkGroup($request, 'admin');
 
-        $products = $cart->products;
-
-        return response()->json($products)->setCallback($request->input('callback'));
-
-    }
-
-    /**
-     * Get all products for a given cart
-     *
-     * @param Request $request
-     * @param $id
-     * @return JsonResponse
-     */
-    public function myProducts(Request $request)
-    {
-        $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
-
-        $products = $cart->products;
-
-        return response()->json($products)->setCallback($request->input('callback'));
+            if ($isAdmin) {
+                $products = Order::query()->where('id','=',$orderid)->first()->products;
+                return response()->json($products)->setCallback($request->input('callback'));
+            } else {
+                $products = Order::query()->where('user_id','=',Auth::user()->id)->where('id','=',$orderid)->first()->products;
+                return response()->json($products)->setCallback($request->input('callback'));
+            }
+        }else{
+            return response()->json(["error"=>'Unauthorized'], 400);        }
 
     }
 
