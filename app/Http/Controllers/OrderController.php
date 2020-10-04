@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
@@ -70,14 +71,15 @@ class OrderController extends Controller
             $isAdmin = $this->checkGroup($request, 'admin');
 
             if ($isAdmin) {
-                $orders = Order::all();
+                $orders = Order::with('user')->get();
                 return response()->json($orders)->setCallback($request->input('callback'));
             } else {
-                $orders = Order::query()->where('user_id','=',Auth::user()->id)->get();
+                $orders = Order::with('user')->where('user_id','=',Auth::user()->id)->get();
                 return response()->json($orders)->setCallback($request->input('callback'));
             }
-        }else{
-            return response()->json(["error"=>'Unauthorized'], 400);        }
+        }else {
+            return response()->json(["error" => 'Unauthorized'], 400);
+        }
 
     }
 
@@ -108,7 +110,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Get all products for a given cart
+     * Get all products for a given order
      *
      * @param Request $request
      * @param $id
@@ -131,6 +133,97 @@ class OrderController extends Controller
         }else{
             return response()->json(["error"=>'Unauthorized'], 400);        }
 
+    }
+
+    /**
+     * Mark an order as sent
+     *
+     * @param Request $request
+     * @return JsonResponse
+     *
+     */
+
+    public function markAsSent(Request $request){
+        if(Auth::user()) {
+            $orderid=$request->route()[2]['id'];
+            $isAdmin = $this->checkGroup($request, 'admin');
+
+            if ($isAdmin) {
+                $order = Order::query()->where('id','=',$orderid)->first();
+                $order->update(['sent_date'=>Carbon::now()]);
+                return response()->json($order)->setCallback($request->input('callback'));
+            } else {
+                return response()->json(["error"=>'Unauthorized'], 400);
+
+            }
+        }else {
+            return response()->json(["error" => 'Unauthorized'], 400);
+        }
+    }
+
+    /**
+     * Mark an order as received
+     *
+     * @param Request $request
+     * @return JsonResponse     *
+     */
+    public function markAsReceived(Request $request){
+        if(Auth::user()) {
+            $orderid=$request->route()[2]['id'];
+            $isAdmin = $this->checkGroup($request, 'admin');
+
+            if ($isAdmin) {
+                $order = Order::query()->where('id','=',$orderid)->first();
+                $order->update(['received_date'=>Carbon::now()]);
+                return response()->json($order)->setCallback($request->input('callback'));
+            } else {
+                $order = Order::query()->where('user_id','=',Auth::user()->id)->where('id','=',$orderid)->first();
+                $order->update(['received_date'=>Carbon::now()]);
+                return response()->json($order)->setCallback($request->input('callback'));
+
+            }
+        }else{
+            return response()->json(["error"=>'Unauthorized'], 400);
+        }
+    }
+
+    /**
+     * Cancel an order
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+
+    public function cancelOrder(Request $request){
+        if(Auth::user()) {
+            $orderid=$request->route()[2]['id'];
+            $isAdmin = $this->checkGroup($request, 'admin');
+
+            if ($isAdmin) {
+                $order = Order::query()->where('id','=',$orderid)->first();
+                try {
+                    $order->delete();
+                    $order->save();
+                    return response()->json($order)->setCallback($request->input('callback'));
+
+                } catch (Exception $e) {
+                    return response()->json($e)->setCallback($request->input('callback'));
+                }
+            } else {
+                $order = Order::query()->where('user_id','=',Auth::user()->id)->where('id','=',$orderid)->first();
+                try {
+                    $order->delete();
+                    $order->save();
+                    return response()->json($order)->setCallback($request->input('callback'));
+
+                } catch (Exception $e) {
+                    return response()->json($e)->setCallback($request->input('callback'));
+                }
+
+            }
+        }else{
+            return response()->json(["error"=>'Unauthorized'], 400);
+        }
     }
 
 

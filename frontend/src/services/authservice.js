@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '../store'
 
 const API_URL = 'http://localhost/api/v1/users/';
 

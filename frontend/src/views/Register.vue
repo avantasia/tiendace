@@ -48,7 +48,7 @@
                     id="input-2"
                     v-model="form.password"
                     required
-                    placeholder="Nombre"
+                    placeholder="Contraseña"
                     type="password"
                 ></b-form-input>
             </b-form-group>
@@ -57,7 +57,7 @@
                     id="input-4"
                     v-model="form.password_confirmation"
                     required
-                    placeholder="Nombre"
+                    placeholder="Confirmar contraseña"
                     type="password"
                 ></b-form-input>
             </b-form-group>

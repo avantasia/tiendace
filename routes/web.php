@@ -66,6 +66,18 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         //Get products for an order
         $router->get('/{id}/products', 'OrderController@products');
 
+        //Mark order as sent
+        $router->get('/{id}/send','OrderController@markAsSent');
+
+        //Mark order as received
+        $router->get('/{id}/receive','OrderController@markAsReceived');
+
+        //Cancel order
+        $router->get('/{id}/cancel','OrderController@cancelOrder');
+
+
+
+
     });
 
 

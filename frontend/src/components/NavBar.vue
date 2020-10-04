@@ -77,6 +77,8 @@
                         </template>
 
                         <b-dropdown-item v-on:click="profile">Perfil</b-dropdown-item>
+                        <b-dropdown-item :to="{name:'Orders'}">Pedidos</b-dropdown-item>
+                        <b-dropdown-item :to="{name:'AdminOrders'}"  v-if="this.$store.state.userIsAdmin">Administracion</b-dropdown-item>
                         <b-dropdown-item v-on:click="logout">Cerrar sesión</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
@@ -87,7 +89,6 @@
                 v-model="showAlertUserPass"
                 dismissible
                 variant="warning"
-
             >
                 Usuario o contraseña incorrecta: {{UserPassError}}}
             </b-alert>
@@ -104,7 +105,6 @@ export default {
     computed: {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
-
         }
     },
     data() {
@@ -122,6 +122,9 @@ export default {
         }
     },
     methods: {
+        prueba(){
+            console.log(this.$store.state.userIsAdmin)
+        },
         login() {
             this.loading = true;
             this.$validator.validateAll().then(isValid => {
@@ -133,6 +136,7 @@ export default {
                 if (this.user.email && this.user.password) {
                     this.$store.dispatch('auth/login', this.user).then(
                         () => {
+                            this.checkAdmin()
                             if(this.$router.currentRoute.path!='/'){
                                 this.$router.push('/');
                             }
@@ -151,6 +155,17 @@ export default {
                     );
                 }
             });
+
+        },
+        checkAdmin(){
+            const API_URL = 'http://localhost/api/v1/users/';
+
+            axios.get(API_URL+'isadmin',{headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
+                .then(response=>
+                     //console.log(response.data.admin)
+                    this.$store.commit("setAdmin",response.data.admin)
+                )
+
         },
         logout(){
             this.$store.dispatch('auth/logout')

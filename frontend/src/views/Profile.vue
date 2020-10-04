@@ -2,6 +2,21 @@
 <b-container>
 
     <div>
+        <b-alert
+            :show="dismissCountDown"
+            dismissible
+            :variant=level
+            @dismissed="dismissCountDown=0"
+            @dismiss-count-down="countDownChanged"
+        >
+            {{ message }}
+            <b-progress
+                :variant=level
+                :max="dismissSecs"
+                :value="dismissCountDown"
+                height="4px"
+            ></b-progress>
+        </b-alert>
         <b-card bg-variant="light" class="mb-3">
 
             <b-img :src="getProfilePic()"
@@ -117,7 +132,12 @@ name: "Profile.vue",
     data(){
         return{
             user:new User(),
-            profilepic:undefined
+            profilepic:undefined,
+            message:"",
+            dismissSecs: 5,
+            dismissCountDown: 0,
+            showDismissibleAlert: false,
+            level:"primary"
         }
     },
     created(){
@@ -160,11 +180,16 @@ name: "Profile.vue",
                 .then(response => {
                     //this.products=response.data;
                     console.log(response)
-                }).catch(function (error){
+                    this.refreshProfile();
+                    this.message="Datos actualizados correctamente"
+                    this.showAlert();
+
+                }).catch(error=>{
                     console.log(error);
+                    this.message="Error actualizando datos "+error
+                    this.showAlert();
                 })
 
-            this.refreshProfile();
         },
         getProfilePic() {
             if (this.user.profile_picture == "" || this.user.profile_picture == null) {
@@ -173,7 +198,13 @@ name: "Profile.vue",
                 return "img/users/"+this.user.profile_picture;
             }
 
-        }
+        },
+        countDownChanged(dismissCountDown) {
+            this.dismissCountDown = dismissCountDown
+        },
+        showAlert() {
+            this.dismissCountDown = this.dismissSecs
+        },
 
     }
 }

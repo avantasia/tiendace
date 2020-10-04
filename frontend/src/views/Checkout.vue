@@ -173,7 +173,7 @@ export default {
 
         },
         shipping() {
-            if (this.shipping_method == NaN || this.shipping_method == null || this.shipping_method == "") {
+            if (isNaN(this.shipping_method) || this.shipping_method == null || this.shipping_method === "") {
                 return 0
             } else {
                 return parseFloat(this.shipping_method).toFixed(2)
@@ -181,10 +181,10 @@ export default {
         },
         checkout() {
 
-            if (this.shipping_method == NaN || this.shipping_method == null || this.shipping_method == "") {
+            if (isNaN(this.shipping_method) || this.shipping_method == null || this.shipping_method === "") {
                 this.message = "Debe seleccionar un método de envío"
                 this.showAlert()
-            } else if (this.payment_method == NaN || this.payment_method == null || this.payment_method == "") {
+            } else if (isNaN(this.payment_method) || this.payment_method == null || this.payment_method === "") {
                 this.message = "Debe seleccionar un método de pago"
                 this.showAlert()
             } else {

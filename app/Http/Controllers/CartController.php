@@ -151,12 +151,12 @@ class CartController extends Controller
     public function myProducts(Request $request)
     {
         $cart=Cart::query()->where('user_id','=',Auth::user()->id)->first();
-
-        $products = $cart->products;
-
-        return response()->json($products)->setCallback($request->input('callback'));
-
+        if($cart!=null){
+            $products = $cart->products;
+            return response()->json($products)->setCallback($request->input('callback'));
+        }else{
+            return response()->json(["error"=>'Cart is empty'], 500)->setCallback($request->input('callback'));
+        }
     }
-
 
 }

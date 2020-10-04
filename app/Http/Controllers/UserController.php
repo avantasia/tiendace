@@ -54,7 +54,7 @@ class UserController extends Controller
             if ($isAdmin) {
                 return response()->json(["admin"=>true],200)->setCallback($request->input('callback'));
             } else {
-                return response()->json(["admin"=>false],500)->setCallback($request->input('callback'));
+                return response()->json(["admin"=>false],200)->setCallback($request->input('callback'));
             }
         }else{
             return response()->json(["error"=>'Unauthorized'], 400);
@@ -137,6 +137,12 @@ class UserController extends Controller
     }
 
     public function updateUser(Request $request){
+        try{
+
+        $this->validate($request, [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+        ]);
 
         $user = User::find(Auth::user()->id);
         $user->name = $request->input('name');
@@ -156,6 +162,9 @@ class UserController extends Controller
         $user->save();
 
         return response()->json($user);;
+        } catch (\Exception $e){
+            return response()->json($e,500);;
+        }
     }
 
 

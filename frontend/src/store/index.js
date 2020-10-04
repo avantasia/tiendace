@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        cart:[]
+        cart:[],
+        userIsAdmin:false
     },
     mutations: {
         addToCart(cart,item){
@@ -55,6 +56,9 @@ export default new Vuex.Store({
         },
         emptyCart(){
             this.state.cart=[]
+        }
+        ,setAdmin(userIsAdmin,state){
+            this.state.userIsAdmin=state;
         }
     },
     actions: {},

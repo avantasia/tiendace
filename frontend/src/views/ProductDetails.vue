@@ -83,10 +83,13 @@ export default {
 
             axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response => {
-                    //this.products=response.data;
                     this.$store.commit('refreshCart',response.data)
                     this.products=this.$store.state.cart
-                });
+                }).catch(error =>{
+                    if(error.response.status==500){
+                        console.log(error.response)
+                    }
+            });
         }
     }
 }
