@@ -1,10 +1,6 @@
 <template>
     <b-container fluid>
         <b-row>
-            {{ category.category }}
-        </b-row>
-
-        <b-row>
 
             <b-card-group class="mx-auto mb-2 " deck v-for="row in productsPerRow" :key="products.index">
 
@@ -47,6 +43,14 @@ export default {
 
         }
     },
+    /*
+    beforeRouteUpdate(to, from, next){
+        console.log(to)
+        this.category = to.params.category
+        next()
+    },
+
+     */
     created() {
         let $url;
         if (this.category.category == null) {

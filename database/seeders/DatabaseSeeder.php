@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
                 RoleSeeder::class,
                 RoleUserSeeder::class,
                 ProductSeeder::class,
-                CategorySeeder::class
+                CategorySeeder::class,
+                ProductsCategoriesSeeder::class
             ]
         );
 
@@ -35,15 +36,16 @@ class DatabaseSeeder extends Seeder
          * Many to many seeding
          * After table seeding attach many-to-many relations here
          *
-         */
+         *
 
-        // Products and categories
+         Products and categories
         $categories = Category::all();
         Product::all()->each(function ($product) use ($categories) {
             $product->categories()->attach(
                 $categories->random(rand(1, 5))->pluck('id')->toArray()
             );
         });
+         */
 
     }
 }

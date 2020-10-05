@@ -14,18 +14,19 @@
 
                     <b-nav-item to="/">Inicio</b-nav-item>
 
-
-                    <b-nav-item :to="{ name: 'ProductList', params: {'category':1}}">
+                    <b-nav-item :to="{path:'/categories/1'}">
                         Especias
                     </b-nav-item>
 
+                    <b-nav-item :to="{path:'/categories/2'}">
+                        Frescos
+                    </b-nav-item>
 
-                    <b-nav-item-dropdown text="Ingredientes">
-                        <b-dropdown-item href="#">Frescos</b-dropdown-item>
-                        <b-dropdown-item href="#">Conservas</b-dropdown-item>
-                        <b-dropdown-item href="#">Pastas y arroces</b-dropdown-item>
-                        <b-dropdown-item href="#">De temporada</b-dropdown-item>
-                    </b-nav-item-dropdown>
+                    <b-nav-item :to="{path:'/categories/3'}">
+                        Salsas
+                    </b-nav-item>
+
+
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->

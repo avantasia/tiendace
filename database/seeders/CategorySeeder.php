@@ -25,17 +25,10 @@ class CategorySeeder extends Seeder
         ]);
 
         DB::table('categories')->insert([
-            'name' => 'conservas',
+            'name' => 'salsas',
             'coverimage' => 'TODO'
         ]);
-        DB::table('categories')->insert([
-            'name' => 'pastas',
-            'coverimage' => 'TODO'
-        ]);
-        DB::table('categories')->insert([
-            'name' => 'temporada',
-            'coverimage' => 'TODO'
-        ]);
+
 
 
     }
