@@ -54,9 +54,9 @@ export default {
     created() {
         let $url;
         if (this.category.category == null) {
-            $url = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/products/'
+            $url = process.env.VUE_APP_API_HOST+'/api/v1/products/'
         } else {
-            $url = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/categories/' + this.category.category + '/products'
+            $url = process.env.VUE_APP_API_HOST+'/api/v1/categories/' + this.category.category + '/products'
         }
 
         jsonp($url, null, (err, data) => {

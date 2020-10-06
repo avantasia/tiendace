@@ -75,9 +75,6 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         //Cancel order
         $router->get('/{id}/cancel','OrderController@cancelOrder');
 
-
-
-
     });
 
 

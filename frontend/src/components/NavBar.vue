@@ -160,7 +160,7 @@ export default {
 
         },
         checkAdmin(){
-            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/';
+            const API_URL = process.env.VUE_APP_API_HOST+'/api/v1/users/';
 
             axios.get(API_URL+'isadmin',{headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response=>
@@ -173,7 +173,7 @@ export default {
             this.$store.dispatch('auth/logout')
         },
         profile(){
-            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/';
+            const API_URL = process.env.VUE_APP_API_HOST+'/api/v1/users/';
 
             axios.get(API_URL + 'profile', {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response => {

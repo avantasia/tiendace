@@ -79,7 +79,7 @@ export default {
             this.dismissCountDown = this.dismissSecs
         },
         refreshCart() {
-            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/cart/myproducts';
+            const API_URL = process.env.VUE_APP_API_HOST+'/api/v1/cart/myproducts';
 
             axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response => {
