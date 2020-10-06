@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         refreshOrders(){
-            const API_URL = 'http://localhost/api/v1/orders'
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/orders'
 
             axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response => {
@@ -81,7 +81,7 @@ export default {
             }
         },
         markAsSent(order){
-            const API_URL = 'http://localhost/api/v1/orders'
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/orders'
 
             axios.get(API_URL+'/'+order.id+'/send' , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response => {
@@ -92,7 +92,7 @@ export default {
 
         },
         cancelOrder(order){
-            const API_URL = 'http://localhost/api/v1/orders'
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/orders'
 
             axios.get(API_URL+'/'+order.id+'/cancel' , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response => {

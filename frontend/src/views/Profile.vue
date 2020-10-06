@@ -147,7 +147,7 @@ name: "Profile.vue",
     },
     methods :{
         refreshProfile(){
-            const API_URL = 'http://localhost/api/v1/users/myuser';
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/myuser';
 
             axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response => {
@@ -164,7 +164,7 @@ name: "Profile.vue",
                 });
         },
         updateUser(){
-            const API_URL = 'http://localhost/api/v1/users/update';
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/update';
             let data = new FormData()
 
 

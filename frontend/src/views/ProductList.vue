@@ -38,7 +38,7 @@ export default {
     name: "ProductList",
     data() {
         return {
-            products: [],
+            products: this.$store.state.products,
             category: this.$route.params
 
         }
@@ -54,9 +54,9 @@ export default {
     created() {
         let $url;
         if (this.category.category == null) {
-            $url = 'http://localhost/api/v1/products/'
+            $url = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/products/'
         } else {
-            $url = 'http://localhost/api/v1/categories/' + this.category.category + '/products'
+            $url = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/categories/' + this.category.category + '/products'
         }
 
         jsonp($url, null, (err, data) => {
@@ -65,13 +65,14 @@ export default {
             } else {
                 // Get all products.
                 // TODO get only some of them in rows with indexNumer api/do something to paginate
-                this.products = data
+                this.$store.commit('setProducts',data)
+                //this.products = data
             }
         });
     },
     computed: {
         productsPerRow() {
-            return this.products.reduce((c, n, i) => {
+            return  this.$store.state.visibleProducts.reduce((c, n, i) => {
                 if (i % 5 === 0) c.push([]);
                 c[c.length - 1].push(n);
                 return c;

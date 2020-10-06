@@ -155,7 +155,7 @@ export default {
 
     methods: {
         refreshProfile() {
-            const API_URL = 'http://localhost/api/v1/users/myuser';
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/myuser';
 
             axios.get(API_URL, {headers: {'Authorization': 'Bearer ' + this.$store.state.auth.user.token}})
                 .then(response => {
@@ -188,7 +188,7 @@ export default {
                 this.message = "Debe seleccionar un método de pago"
                 this.showAlert()
             } else {
-                const API_URL = 'http://localhost/api/v1/orders/create';
+                const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/orders/create';
                 let data = {
                     'payment_method': this.payment_method,
                     'shipping_method': this.shipping_method

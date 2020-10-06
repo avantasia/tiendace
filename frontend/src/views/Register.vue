@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         register() {
-            const API_URL = 'http://localhost/api/v1/users/register';
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/register';
 
 
             axios.post(API_URL, this.form)

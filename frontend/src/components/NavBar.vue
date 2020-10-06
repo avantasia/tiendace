@@ -32,10 +32,7 @@
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form>
-                        <b-form-input size="md" class="mr-sm-2" type="search" placeholder="Buscar"></b-form-input>
-                        <b-button size="md" class="btn btn-outline-success my-2 my-sm-0 mr-3 ml-3" variant="light">
-                            Buscar
-                        </b-button>
+                        <b-form-input v-model="term" v-on:keyup="search" size="md" class="mr-sm-2" type="search" placeholder="Buscar"></b-form-input>
 
                     </b-nav-form>
 
@@ -114,7 +111,11 @@ export default {
             loading: false,
             message: '',
             showAlertUserPass: false,
-            UserPassError: ""
+            UserPassError: "",
+            term:"",
+            options: {
+                keys:['name','description']
+            }
         };
     },
     created() {
@@ -159,7 +160,7 @@ export default {
 
         },
         checkAdmin(){
-            const API_URL = 'http://localhost/api/v1/users/';
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/';
 
             axios.get(API_URL+'isadmin',{headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response=>
@@ -172,7 +173,7 @@ export default {
             this.$store.dispatch('auth/logout')
         },
         profile(){
-            const API_URL = 'http://localhost/api/v1/users/';
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/';
 
             axios.get(API_URL + 'profile', {headers: {'Authorization': 'Bearer '+this.$store.state.auth.user.token} })
                 .then(response => {
@@ -181,6 +182,12 @@ export default {
         },
         cart(){
 
+        },search(){
+            if(this.term!=null && this.term!=""){
+            this.$search(this.term, this.$store.state.products, this.options).then(results => {
+                this.$store.commit('setVisibleProducts',results)
+            })
+            }
         }
 
 

@@ -8,14 +8,23 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         cart:[],
-        userIsAdmin:false
+        userIsAdmin:false,
+        products:[],
+        visibleProducts:[]
     },
     mutations: {
+        setProducts(products,newproducts){
+            this.state.products=newproducts;
+            this.state.visibleProducts=newproducts;
+        },
+        setVisibleProducts(visibleProducts,newproducts){
+            this.state.visibleProducts=newproducts;
+        },
         addToCart(cart,item){
             this.state.cart.push(item)
 
             if(this.state.auth.status.loggedIn){
-                const API_URL = 'http://localhost/api/v1/cart/addtocart';
+                const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/cart/addtocart';
                 console.log(item)
                 axios.post(API_URL , {'id':item.id},{headers: {'Authorization': 'Bearer '+this.state.auth.user.token} })
                     .then(response => {
@@ -25,7 +34,7 @@ export default new Vuex.Store({
             }
         },
         refreshCart(){
-            const API_URL = 'http://localhost/api/v1/cart/myproducts';
+            const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/cart/myproducts';
 
             axios.get(API_URL , {headers: {'Authorization': 'Bearer '+this.state.auth.user.token} })
                 .then(response => {
@@ -44,7 +53,7 @@ export default new Vuex.Store({
             this.state.cart.splice(this.state.cart.indexOf(item), 1);
 
             if(this.state.auth.status.loggedIn){
-                const API_URL = 'http://localhost/api/v1/cart/removefromcart';
+                const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/cart/removefromcart';
                 console.log(item)
                 axios.post(API_URL , {'id':item.id},{headers: {'Authorization': 'Bearer '+this.state.auth.user.token} })
                     .then(response => {

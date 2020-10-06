@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from '../store'
 
-const API_URL = 'http://localhost/api/v1/users/';
+const API_URL = 'http://'+process.env.VUE_APP_API_HOST+'/api/v1/users/';
 
 class AuthService {
     login(user) {
