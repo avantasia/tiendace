@@ -33,6 +33,7 @@
 
 <script>
 import jsonp from 'jsonp';
+import axios from 'axios';
 
 export default {
     name: "ProductList",
@@ -59,16 +60,14 @@ export default {
             $url = process.env.VUE_APP_API_HOST+'/api/v1/categories/' + this.category.category + '/products'
         }
 
-        jsonp($url, null, (err, data) => {
-            if (err) {
-                console.error(err.message);
-            } else {
-                // Get all products.
-                // TODO get only some of them in rows with indexNumer api/do something to paginate
-                this.$store.commit('setProducts',data)
-                //this.products = data
-            }
+        axios.get($url)
+        .then(response => {
+            this.$store.commit('setProducts',response.data)
+        }).
+            catch(error =>{
+            console.error(err.message);
         });
+
     },
     computed: {
         productsPerRow() {
