@@ -103,11 +103,22 @@ export default {
             const API_URL = process.env.VUE_APP_API_HOST+'/api/v1/users/register';
 
 
-            axios.post(API_URL, this.form)
+            let data=this.form;
+            data['currentCart']= this.$store.state.cart
+
+
+            axios.post(API_URL,data)
                 .then(response => {
                     this.message="Usuario creado correctamente"
                     this.level="success"
                     this.showAlert()
+                    this.$store.commit('emptyCart')
+                    console.log(response.data)
+                    this.user.email=data.email
+                    this.user.password=data.password
+                    this.$store.dispatch('auth/login', this.user)
+                    this.$store.commit('refreshCart')
+
 
                 })
                 .catch(error =>{

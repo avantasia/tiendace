@@ -120,8 +120,12 @@
                 ></b-progress>
             </b-alert>
         </div>
-        <b-button v-on:click="checkout()" type="button" variant="outline-success"
+
+        <b-button v-if="this.$store.state.auth.status.loggedIn" v-on:click="checkout()" type="button" variant="outline-success"
                   class="btn btn-outline-success btn-block mt-3">Confirmar compra
+        </b-button>
+        <b-button v-else :to="{name: 'Register'}" type="button" variant="outline-success"
+                  class="btn btn-outline-success btn-block mt-3">Registrate para finalizar la compra
         </b-button>
 
     </b-container>

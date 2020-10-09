@@ -10,9 +10,14 @@
 
             >
                 <b-row no-gutters>
-                    <b-col class="col-md-4" align-self="center">
-                        <b-card-img :src="product[0].image" alt="Image" class="rounded-0"></b-card-img>
+                    <b-row v-if="mediaSize=='mobile'">
+                        <b-card-img :src="product[0].image" alt="Image" class="rounded-0 mb-2"></b-card-img>
+
+                    </b-row>
+                    <b-col class="col-md-4" align-self="center"  v-else>
+                            <b-card-img :src="product[0].image" alt="Image" class="rounded-0"></b-card-img>
                     </b-col>
+
 
                     <b-col align-self="center">
                         Cantidad
@@ -50,15 +55,21 @@
         >
             Total {{ this.totalPrice}}
             </b-card>
-        <b-button :to="{ name: 'Checkout'}" type="button" variant="outline-success" class="btn btn-outline-success btn-block" >Confirmar compra</b-button>
+
+        <b-button v-if="this.$store.state.auth.status.loggedIn" :to="{ name: 'Checkout'}" type="button" variant="outline-success"
+                  class="btn btn-outline-success btn-block mt-3">Confirmar compra
+        </b-button>
+        <b-button v-else :to="{name: 'Register'}" type="button" variant="outline-success"
+                  class="btn btn-outline-success btn-block mt-3">Registrate para finalizar la compra
+
+        </b-button>
 
 
     </b-container>
 </template>
 
 <script>
-import jsonp from 'jsonp';
-import axios from "axios";
+
 
 export default {
     name: "Cart",
@@ -75,6 +86,9 @@ export default {
         this.groupedProducts = _.groupBy(this.products, "id")
     },
     computed: {
+        mediaSize(){
+            return this.$mq;
+        },
         totalPrice(){
             let result = this.products.reduce((a, b) => a += Object.values(b)[2], 0);
             return result.toFixed(2)

@@ -33,6 +33,18 @@ export default new Vuex.Store({
                     });
             }
         },
+        addToCartNoRefresh(cart,item){
+            this.state.cart.push(item)
+
+            if(this.state.auth.status.loggedIn){
+                const API_URL = process.env.VUE_APP_API_HOST+'/api/v1/cart/addtocart';
+                console.log(item)
+                axios.post(API_URL , {'id':item.id},{headers: {'Authorization': 'Bearer '+this.state.auth.user.token} })
+                    .then(response => {
+                        console.log(response.data);
+                    });
+            }
+        },
         refreshCart(){
             const API_URL = process.env.VUE_APP_API_HOST+'/api/v1/cart/myproducts';
 
@@ -44,7 +56,7 @@ export default new Vuex.Store({
         persistCart(){
             this.state.cart.each(
                 function ($product){
-                    this.addToCart('addToCart',$product)
+                    this.addToCart('addToCartNoRefresh',$product)
                 }
             )
         },
