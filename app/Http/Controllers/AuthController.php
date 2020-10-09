@@ -3,6 +3,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,8 +17,10 @@ class AuthController extends Controller
      * Store a new user.
      *
      * @param Request $request
-     * @return Response
+     * @return JsonResponse
+     * @throws ValidationException
      */
+
     public function register(Request $request)
     {
         //Validate data
@@ -36,8 +40,27 @@ class AuthController extends Controller
 
             $user->save();
 
+            $user = User::query()->where('email','=',$user->email)->first();
+
+            $credentials = $request->only(['email', 'password']);
+            $token = Auth::attempt($credentials);
+
+            $cart = Cart::create( array('user_id'=>$user->id));
+            $cart->save();
+
+
+            $cart=Cart::query()->where('user_id','=',$user->id)->first();
+
+            $products = $request->input('currentCart');
+            foreach ($products as $p){
+                $id = $p['id'];
+                $cart->products()->attach(Product::find($id));
+            }
+
+
+
             //Return if success
-            return response()->json(['user' => $user, 'message' => 'User created'], 201);
+            return response()->json(['user' => $user, 'message' => 'User created', 'token' => $token], 201);
 
         } catch (\Exception $e) {
             //Return if failure

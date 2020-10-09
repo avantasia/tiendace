@@ -45,7 +45,8 @@ class UserController extends Controller
 
     /**
      * Check if the user is admin, inherited from Controller but exposed here
-     *
+     * @param Request $request
+     * @return JsonResponse
      */
     public function isAdmin(Request $request){
         if(Auth::user()) {

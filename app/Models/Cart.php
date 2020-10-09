@@ -11,10 +11,15 @@ class Cart extends Model
 {
 
 
-    public function __construct(array $attributes = array())
+    public function __construct(array $attributes = array() )
     {
-        $userid = Auth::user()->id;
-        $this->user_id=$userid;
+
+        if($attributes == null){
+            $this->user_id = Auth::user()->id;
+        }else{
+            $this->user_id = $attributes['user_id'];
+        }
+
     }
 
     /**
