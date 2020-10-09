@@ -141,13 +141,11 @@ class UserController extends Controller
         try{
 
         $this->validate($request, [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
+            'name' => 'required|string'
         ]);
 
         $user = User::find(Auth::user()->id);
         $user->name = $request->input('name');
-        $user->email = $request->input('email');
         $user->address = $request->input('address');
         $user->city = $request->input('city');
         $user->postal_code = $request->input('postal_code');

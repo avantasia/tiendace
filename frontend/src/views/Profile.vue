@@ -168,7 +168,6 @@ name: "Profile.vue",
             let data = new FormData()
 
 
-            data.append('email',this.user.email)
             data.append('name',this.user.name)
             data.append('address',this.user.address)
             data.append('city',this.user.city)
