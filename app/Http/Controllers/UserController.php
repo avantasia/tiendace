@@ -154,7 +154,7 @@ class UserController extends Controller
             $picName = Hash("sha256", $user->email);
             $extension = $request->file('profile_picture')->clientExtension();
             $user->picture = $picName . "." . $extension;
-            $destinationPath = '..' . DIRECTORY_SEPARATOR . 'frontend' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'users';
+            $destinationPath = '..' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'users';
             $request->file('profile_picture')->move($destinationPath, $user->picture);
         }
 
