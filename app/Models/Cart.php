@@ -14,7 +14,7 @@ class Cart extends Model
     public function __construct(array $attributes = array() )
     {
 
-        if($attributes == null){
+        if(!array_key_exists('user_id',$attributes)){
             $this->user_id = Auth::user()->id;
         }else{
             $this->user_id = $attributes['user_id'];
