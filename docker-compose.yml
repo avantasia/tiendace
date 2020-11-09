@@ -1,0 +1,67 @@
+version: "3"
+services:
+  app:
+    build:
+      args:
+        user: david
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: travellist
+    container_name: tiendace-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - tiendace
+
+  db:
+    image: mysql:5.7
+    container_name: tiendace-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - tiendace
+
+  nginx:
+    image: nginx:alpine
+    container_name: tiendace-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - tiendace
+   
+  apache:
+    image: php:7-apache
+    container_name: tiendace-apache
+    restart: unless-stopped
+    ports:
+      - 8001:80
+    volumes:
+      - ./:/var/www/tiendace
+      - ./docker-compose/apache:/etc/apache2/sites-enabled
+    networks:
+      - tiendace
+
+  composer:
+    image: composer/composer
+    command: install
+    volumes: 
+      - ./:/app
+
+networks:
+  tiendace:
+    driver: bridge
