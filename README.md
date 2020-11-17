@@ -20,8 +20,22 @@ Personalmente he aprovechado esta práctica para la exploración de Lumen en el 
 Por requisito de la práctica se ha utilizado 
 [XAMPP](https://www.apachefriends.org/es/index.html), que incluye el servidor Apache, PHP y MariaDB listos para usar
 
+## Instalación recomendada : Docker
 
-## Inicializacion de la aplicacion
+El proyecto incluye un archivo Dockerfile que monta la app , solo hay que copiar el archivo .env.example como .env y ejecutar
+
+`docker-compose up -d`
+
+y después
+
+`docker exec -it tiendace-app php artisan jwt:secret`
+
+para generar los tokens.
+
+La aplicación estará disponible en el puerto 80 (nginx) o 8001 (apache)
+
+
+## Instalación manual
 
 Cambiar en el fichero .env los valores
 ```
@@ -53,6 +67,8 @@ Para generar una clave aleatoria para los tokens JWT
  `npm run-script build`
  
  aunque se incluye una versión ya actualizada con el código, si se realiza cualquier cambio hay que volver a hacer el build, tras el cual un script copiará los archivos de vue frontend/dist en las rutas adecuadas de Lumen.
+
+ 
  
  ## Copyright
  
