@@ -33,8 +33,7 @@ services:
       - tiendace
 
   nginx:
-    image: nginx:alpine
-    container_name: tiendace-nginx
+    image: nginx:alpine    
     restart: unless-stopped
     ports:
       - 80/tcp

@@ -26,6 +26,10 @@ El proyecto incluye un archivo Dockerfile que monta la app , solo hay que copiar
 
 `docker-compose up -d`
 
+o si se quiere desplegar por ejemplo el backend de la api en varios nodos (funciona igual, no hay que hacer ningún cambio)
+
+`docker-compose up --scale nginx=4 -d`
+
 y después
 
 `docker exec -it tiendace-app php artisan jwt:secret`

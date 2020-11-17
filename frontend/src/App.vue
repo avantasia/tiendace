@@ -2,7 +2,9 @@
     <div id="app">
         <NavBar/>
         <router-view :key="$route.fullPath"></router-view>
+
     </div>
+            
 </template>
 
 <style lang="scss">
